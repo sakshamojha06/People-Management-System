@@ -1,0 +1,16 @@
+.navbar {
+  background: #312e81;
+}
+
+.navbar-brand {
+  letter-spacing: 0.2px;
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #ffffff;
+}
