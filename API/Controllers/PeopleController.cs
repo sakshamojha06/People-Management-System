@@ -1,3 +1,4 @@
+using API.DTOs;
 using API.Models;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,6 @@ public class PeopleController : ControllerBase
         _service = service;
     }
 
-    // GET: api/people
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -23,7 +23,6 @@ public class PeopleController : ControllerBase
         return Ok(people);
     }
 
-    // GET: api/people/1
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -35,11 +34,10 @@ public class PeopleController : ControllerBase
         return Ok(person);
     }
 
-    // POST: api/people
     [HttpPost]
-    public async Task<IActionResult> Add(Person person)
+    public async Task<IActionResult> Add(CreatePersonDto dto)
     {
-        var result = await _service.AddAsync(person);
+        var result = await _service.AddAsync(dto);
 
         return CreatedAtAction(
             nameof(GetById),
@@ -48,11 +46,10 @@ public class PeopleController : ControllerBase
         );
     }
 
-    // PUT: api/people/1
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, Person person)
+    public async Task<IActionResult> Update(int id, UpdatePersonDto dto)
     {
-        var result = await _service.UpdateAsync(id, person);
+        var result = await _service.UpdateAsync(id, dto);
 
         if (!result)
             return NotFound();
@@ -60,7 +57,6 @@ public class PeopleController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: api/people/1
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {

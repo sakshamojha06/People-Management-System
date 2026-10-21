@@ -1,3 +1,4 @@
+using API.DTOs;
 using API.Models;
 using API.Repositories.Interfaces;
 using API.Services.Interfaces;
@@ -13,25 +14,25 @@ public class PersonService : IPersonService
         _repository = repository;
     }
 
-    public async Task<List<Person>> GetAllAsync()
-    {
-        return await _repository.GetAllAsync();
-    }
+    public async Task<List<PersonDto>> GetAllAsync()
+{
+    return await _repository.GetAllAsync();
+}
 
-    public async Task<Person?> GetByIdAsync(int id)
-    {
-        return await _repository.GetByIdAsync(id);
-    }
+    public async Task<PersonDto?> GetByIdAsync(int id)
+{
+    return await _repository.GetByIdAsync(id);
+}
 
-    public async Task<Person> AddAsync(Person person)
-    {
-        return await _repository.AddAsync(person);
-    }
+    public async Task<PersonDto> AddAsync(CreatePersonDto dto)
+{
+    return await _repository.AddAsync(dto);
+}
 
-    public async Task<bool> UpdateAsync(int id, Person person)
-    {
-        return await _repository.UpdateAsync(id, person);
-    }
+    public async Task<bool> UpdateAsync(int id, UpdatePersonDto dto)
+{
+    return await _repository.UpdateAsync(id, dto);
+}
 
     public async Task<bool> DeleteAsync(int id)
     {

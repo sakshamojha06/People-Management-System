@@ -1,4 +1,5 @@
 using API.Data;
+using API.DTOs;
 using API.Models;
 using API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -14,49 +15,83 @@ public class PersonRepository : IPersonRepository
         _context = context;
     }
 
-    public async Task<List<Person>> GetAllAsync()
+    public async Task<List<PersonDto>> GetAllAsync()
+{
+    return await _context.People
+        .Include(p => p.EducationLevel)
+        .Include(p => p.Degree)
+        .Include(p => p.Specialization)
+        .Select(p => new PersonDto
+        {
+            Id = p.Id,
+            Name = p.Name,
+
+            EducationLevelId = p.EducationLevelId,
+            EducationLevel = p.EducationLevel!.Name,
+
+            DegreeId = p.DegreeId,
+            Degree = p.Degree!.Name,
+
+            SpecializationId = p.SpecializationId,
+            Specialization = p.Specialization!.Name
+        })
+        .ToListAsync();
+}
+
+    public async Task<PersonDto?> GetByIdAsync(int id)
+{
+    return await _context.People
+        .Where(p => p.Id == id)
+        .Select(p => new PersonDto
+        {
+            Id = p.Id,
+            Name = p.Name,
+
+            EducationLevelId = p.EducationLevelId,
+            EducationLevel = p.EducationLevel!.Name,
+
+            DegreeId = p.DegreeId,
+            Degree = p.Degree!.Name,
+
+            SpecializationId = p.SpecializationId,
+            Specialization = p.Specialization!.Name
+        })
+        .FirstOrDefaultAsync();
+}
+
+    public async Task<PersonDto> AddAsync(CreatePersonDto dto)
+{
+    var person = new Person
     {
-        return await _context.People
-            .Include(p => p.EducationLevel)
-            .Include(p => p.Degree)
-            .Include(p => p.Specialization)
-            .ToListAsync();
-    }
+        Name = dto.Name,
+        EducationLevelId = dto.EducationLevelId,
+        DegreeId = dto.DegreeId,
+        SpecializationId = dto.SpecializationId
+    };
 
-    public async Task<Person?> GetByIdAsync(int id)
-    {
-        return await _context.People
-            .Include(p => p.EducationLevel)
-            .Include(p => p.Degree)
-            .Include(p => p.Specialization)
-            .FirstOrDefaultAsync(p => p.Id == id);
-    }
+    _context.People.Add(person);
+    await _context.SaveChangesAsync();
 
-    public async Task<Person> AddAsync(Person person)
-    {
-        _context.People.Add(person);
+    return await GetByIdAsync(person.Id)
+        ?? throw new Exception("Person could not be retrieved.");
+}
 
-        await _context.SaveChangesAsync();
+    public async Task<bool> UpdateAsync(int id, UpdatePersonDto dto)
+{
+    var existingPerson = await _context.People.FindAsync(id);
 
-        return person;
-    }
+    if (existingPerson == null)
+        return false;
 
-    public async Task<bool> UpdateAsync(int id, Person person)
-    {
-        var existingPerson = await _context.People.FindAsync(id);
+    existingPerson.Name = dto.Name;
+    existingPerson.EducationLevelId = dto.EducationLevelId;
+    existingPerson.DegreeId = dto.DegreeId;
+    existingPerson.SpecializationId = dto.SpecializationId;
 
-        if (existingPerson == null)
-            return false;
+    await _context.SaveChangesAsync();
 
-        existingPerson.Name = person.Name;
-        existingPerson.EducationLevelId = person.EducationLevelId;
-        existingPerson.DegreeId = person.DegreeId;
-        existingPerson.SpecializationId = person.SpecializationId;
-
-        await _context.SaveChangesAsync();
-
-        return true;
-    }
+    return true;
+}
 
     public async Task<bool> DeleteAsync(int id)
     {
