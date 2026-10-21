@@ -28,4 +28,20 @@
   </div>
 </nav>
 
+@if (notifications.message()) {
+  <div
+    class="alert alert-dismissible notification-toast shadow"
+    [class.alert-success]="notifications.type() === 'success'"
+    [class.alert-danger]="notifications.type() === 'danger'"
+    role="alert">
+    {{ notifications.message() }}
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close notification"
+      (click)="notifications.dismiss()">
+    </button>
+  </div>
+}
+
 <router-outlet></router-outlet>

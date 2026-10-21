@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { PersonService } from '../../services/person';
+import { NotificationService } from '../../services/notification';
 import { EducationLevel, Degree, Specialization } from '../../Models/education';
 
 @Component({
@@ -15,6 +16,7 @@ export class AddPerson implements OnInit {
 
   private service = inject(PersonService);
   private router = inject(Router);
+  private notifications = inject(NotificationService);
 
   name = '';
   educationLevelId = 0;
@@ -77,7 +79,10 @@ export class AddPerson implements OnInit {
       degreeId: this.degreeId,
       specializationId: this.specializationId
     }).subscribe({
-      next: () => this.router.navigate(['/people']),
+      next: () => {
+        this.notifications.show('Person added successfully.', 'success');
+        this.router.navigate(['/people']);
+      },
       error: () => {
         this.errorMessage = 'Unable to save person.';
         this.loading = false;
