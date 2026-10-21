@@ -1,0 +1,84 @@
+
+.container {
+  max-width: 1200px;
+}
+
+h2 {
+  color: #212529;
+  letter-spacing: -0.5px;
+}
+
+.card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table {
+  font-size: 14px;
+}
+
+.table thead th {
+  padding: 16px;
+  font-weight: 600;
+  color: #495057;
+  white-space: nowrap;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table tbody td {
+  padding: 15px 16px;
+  color: #495057;
+}
+
+.table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fc;
+}
+
+.btn {
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: #4f46e5;
+  border-color: #4f46e5;
+}
+
+.btn-primary:hover {
+  background-color: #4338ca;
+  border-color: #4338ca;
+}
+
+.btn-outline-primary:hover {
+  background-color: #4f46e5;
+  border-color: #4f46e5;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+}
+
+.spinner-border {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  .table {
+    min-width: 750px;
+  }
+}

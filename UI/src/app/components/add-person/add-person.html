@@ -1,1 +1,97 @@
-<p>add-person works!</p>
+<div class="container py-5">
+
+  <div class="card shadow-sm border-0 mx-auto">
+    <div class="card-header bg-primary text-white py-3">
+      <h4 class="mb-0">
+        <i class="bi bi-person-plus me-2"></i>
+        Add New Person
+      </h4>
+    </div>
+
+    <div class="card-body p-4">
+
+      @if (errorMessage) {
+        <div class="alert alert-danger">{{ errorMessage }}</div>
+      }
+
+      <form (ngSubmit)="savePerson()">
+
+        <div class="mb-3">
+          <label class="form-label">Full Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="name"
+            [(ngModel)]="name"
+            placeholder="Enter full name"
+            required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Education Level</label>
+          <select
+            class="form-select"
+            name="educationLevelId"
+            [(ngModel)]="educationLevelId"
+            (ngModelChange)="onEducationLevelChange()"
+            required>
+            <option [ngValue]="0">Select Education Level</option>
+            @for (level of educationLevels; track level.id) {
+              <option [ngValue]="level.id">{{ level.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Degree</label>
+          <select
+            class="form-select"
+            name="degreeId"
+            [(ngModel)]="degreeId"
+            (ngModelChange)="onDegreeChange()"
+            [disabled]="!educationLevelId"
+            required>
+            <option [ngValue]="0">Select Degree</option>
+            @for (degree of degrees; track degree.id) {
+              <option [ngValue]="degree.id">{{ degree.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label">Specialization</label>
+          <select
+            class="form-select"
+            name="specializationId"
+            [(ngModel)]="specializationId"
+            [disabled]="!degreeId"
+            required>
+            <option [ngValue]="0">Select Specialization</option>
+            @for (specialization of specializations; track specialization.id) {
+              <option [ngValue]="specialization.id">
+                {{ specialization.name }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+          <a routerLink="/people" class="btn btn-outline-secondary">
+            Cancel
+          </a>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="loading">
+            @if (loading) {
+              <span class="spinner-border spinner-border-sm me-2"></span>
+            }
+            Save Person
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
